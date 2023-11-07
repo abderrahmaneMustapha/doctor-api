@@ -15,20 +15,17 @@ export class AdminService {
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     const admin = this.adminRepository.create({
       ...createAdminDto,
-      type: 'admin',
     });
     return await this.adminRepository.save(admin);
   }
 
   async findAll(): Promise<Admin[]> {
-    return this.adminRepository.find({
-      where: { type: 'admin' },
-    });
+    return this.adminRepository.find();
   }
 
   async findOne(id: string): Promise<Admin> {
     const admin = await this.adminRepository.findOne({
-      where: { id, type: 'admin' },
+      where: { id },
     });
 
     if (!admin) {

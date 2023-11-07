@@ -10,6 +10,9 @@ import { PatientModule } from './patient/patient.module';
 import { AdminModule } from './admin/admin.module';
 import { PrescriptionModule } from './prescription/prescription.module';
 import { HistoryModule } from './history/history.module';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,14 +33,20 @@ import { HistoryModule } from './history/history.module';
       }),
       inject: [ConfigService],
     }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '2 days' },
+    }),
     DoctorModule,
     UserModule,
     PatientModule,
     AdminModule,
     PrescriptionModule,
     HistoryModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService],
+  providers: [AppService, UserService, AuthService, JwtService],
 })
 export class AppModule {}

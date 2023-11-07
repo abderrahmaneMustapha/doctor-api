@@ -1,7 +1,7 @@
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity } from 'typeorm';
+import { ChildEntity, Column } from 'typeorm';
 
-@Entity()
+@ChildEntity()
 export class Doctor extends User {
   @Column()
   specialization: string;

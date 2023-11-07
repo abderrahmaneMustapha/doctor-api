@@ -15,20 +15,17 @@ export class PatientService {
   async create(createPatientDto: CreatePatientDto): Promise<Patient> {
     const patient = this.patientRepository.create({
       ...createPatientDto,
-      type: 'patient',
     });
     return await this.patientRepository.save(patient);
   }
 
   async findAll(): Promise<Patient[]> {
-    return this.patientRepository.find({
-      where: { type: 'patient' },
-    });
+    return this.patientRepository.find();
   }
 
   async findOne(id: string): Promise<Patient> {
     const patient = await this.patientRepository.findOne({
-      where: { id, type: 'patient' },
+      where: { id },
     });
 
     if (!patient) {

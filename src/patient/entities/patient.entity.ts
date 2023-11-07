@@ -1,7 +1,7 @@
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, ChildEntity } from 'typeorm';
 
-@Entity()
+@ChildEntity()
 export class Patient extends User {
   @Column()
   dateOfBirth: string;

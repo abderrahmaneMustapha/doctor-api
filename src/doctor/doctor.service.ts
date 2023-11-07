@@ -16,7 +16,6 @@ export class DoctorService {
     // Assign the type for the single-table inheritance
     const doctor = this.doctorRepository.create({
       ...createDoctorDto,
-      type: 'doctor',
     });
     return await this.doctorRepository.save(doctor);
   }
@@ -27,7 +26,7 @@ export class DoctorService {
 
   async findOne(id: string): Promise<Doctor> {
     return this.doctorRepository.findOneOrFail({
-      where: { id, type: 'doctor' },
+      where: { id },
     });
   }
 

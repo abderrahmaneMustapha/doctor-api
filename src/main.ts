@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const appService = app.get(AppService); // UserService should have the seeding logic
+  const appService = app.get(AppService);
   await appService.seedDatabase();
   await app.listen(3000);
 }
