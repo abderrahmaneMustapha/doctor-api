@@ -45,7 +45,7 @@ export class HistoryService {
     return await this.HistoryRepository.save(History);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: string): Promise<void> {
     const result = await this.HistoryRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`History with ID ${id} not found`);
