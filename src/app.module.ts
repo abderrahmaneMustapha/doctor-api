@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientModule } from './patient/patient.module';
 import { AdminModule } from './admin/admin.module';
 import { PrescriptionModule } from './prescription/prescription.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PrescriptionModule } from './prescription/prescription.module';
     PatientModule,
     AdminModule,
     PrescriptionModule,
+    HistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],
