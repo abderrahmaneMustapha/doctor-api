@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientModule } from './patient/patient.module';
 import { AdminModule } from './admin/admin.module';
+import { PrescriptionModule } from './prescription/prescription.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AdminModule } from './admin/admin.module';
     UserModule,
     PatientModule,
     AdminModule,
+    PrescriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService],
