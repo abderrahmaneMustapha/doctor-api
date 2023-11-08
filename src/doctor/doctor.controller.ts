@@ -1,42 +1,17 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
-import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('doctors')
+@UseGuards(RolesGuard)
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) {}
 
   @Post()
+  @Roles('admin', 'Admin')
   create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorService.create(createDoctorDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.doctorService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.doctorService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
-    return this.doctorService.update(id, updateDoctorDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.doctorService.remove(id);
   }
 }

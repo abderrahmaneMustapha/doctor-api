@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DoctorModule } from './doctor/doctor.module';
-import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,9 +9,10 @@ import { PatientModule } from './patient/patient.module';
 import { AdminModule } from './admin/admin.module';
 import { PrescriptionModule } from './prescription/prescription.module';
 import { HistoryModule } from './history/history.module';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { AuthService } from './auth/auth.service';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './guards/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -47,6 +47,12 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService, AuthService, JwtService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}
