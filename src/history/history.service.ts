@@ -18,11 +18,16 @@ export class HistoryService {
   }
 
   async findAll(): Promise<History[]> {
-    return await this.historyRepository.find();
+    return await this.historyRepository.find({
+      relations: ['patient', 'doctor'],
+    });
   }
 
   async findOne(id: string): Promise<History> {
-    const History = await this.historyRepository.findOne({ where: { id } });
+    const History = await this.historyRepository.findOne({
+      where: { id },
+      relations: ['patient', 'doctor'],
+    });
     if (!History) {
       throw new NotFoundException(`History with ID ${id} not found`);
     }
@@ -55,6 +60,7 @@ export class HistoryService {
   async findHistoriesForPatient(patientId: string) {
     return this.historyRepository.find({
       where: { patient: { id: patientId } },
+      relations: ['patient', 'doctor'],
     });
   }
 
@@ -64,6 +70,7 @@ export class HistoryService {
         id: historyId,
         patient: { id: patientId },
       },
+      relations: ['patient', 'doctor'],
     });
   }
 }

@@ -8,5 +8,6 @@ import { Prescription } from './entities/prescription.entity';
   imports: [TypeOrmModule.forFeature([Prescription])],
   controllers: [PrescriptionController],
   providers: [PrescriptionService],
+  exports: [TypeOrmModule.forFeature([Prescription])],
 })
 export class PrescriptionModule {}

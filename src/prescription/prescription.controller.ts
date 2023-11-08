@@ -21,22 +21,22 @@ export class PrescriptionController {
   constructor(private readonly prescriptionService: PrescriptionService) {}
 
   @Post()
-  @Roles('admin', 'doctor', 'Admin', 'Doctor')
+  @Roles('doctor', 'Doctor')
   create(@Body() createPrescriptionDto: CreatePrescriptionDto) {
     return this.prescriptionService.create(createPrescriptionDto);
   }
 
   @Get()
-  @Roles('admin', 'doctor', 'patient', 'Admin', 'Doctor', 'Patient')
+  @Roles('doctor', 'patient', 'Doctor', 'Patient')
   findAll(@Req() req: any) {
     if (req.user.type === 'patient' || req.user.type === 'Patient') {
-      return this.prescriptionService.findPrescriptionsForPatient(req.user.id);
+      return this.prescriptionService.findPrescriptionsForPatient(req.user.sub);
     }
     return this.prescriptionService.findAll();
   }
 
   @Get(':id')
-  @Roles('admin', 'doctor', 'patient', 'Admin', 'Doctor', 'Patient')
+  @Roles('doctor', 'patient', 'Doctor', 'Patient')
   findOne(@Req() req: any, @Param('id') id: string) {
     if (req.user.type === 'patient' || req.user.type === 'Patient') {
       return this.prescriptionService.findPrescriptionForPatient(
@@ -48,7 +48,7 @@ export class PrescriptionController {
   }
 
   @Patch(':id')
-  @Roles('admin', 'doctor', 'Admin', 'Doctor')
+  @Roles('doctor', 'Doctor')
   update(
     @Param('id') id: string,
     @Body() updatePrescriptionDto: UpdatePrescriptionDto,
@@ -57,7 +57,7 @@ export class PrescriptionController {
   }
 
   @Delete(':id')
-  @Roles('admin', 'doctor', 'Admin', 'Doctor')
+  @Roles('doctor', 'Doctor')
   remove(@Param('id') id: string) {
     return this.prescriptionService.remove(id);
   }

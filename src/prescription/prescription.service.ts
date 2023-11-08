@@ -64,6 +64,7 @@ export class PrescriptionService {
   async findPrescriptionsForPatient(patientId: string) {
     return this.prescriptionRepository.find({
       where: { patient: { id: patientId } },
+      relations: ['patient', 'doctor'],
     });
   }
 
@@ -73,6 +74,7 @@ export class PrescriptionService {
         id: prescriptionId,
         patient: { id: patientId },
       },
+      relations: ['patient', 'doctor'],
     });
   }
 }
