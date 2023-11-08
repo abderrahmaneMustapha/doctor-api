@@ -3,7 +3,9 @@ import { Repository } from 'typeorm';
 import { Admin } from './admin/entities/admin.entity';
 import { Doctor } from './doctor/entities/doctor.entity';
 import { Patient } from './patient/entities/patient.entity';
+import { History } from './history/entities/history.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Prescription } from './prescription/entities/prescription.entity';
 
 @Injectable()
 export class AppService {
@@ -18,6 +20,10 @@ export class AppService {
     private adminRepository: Repository<Admin>,
     @InjectRepository(Doctor)
     private doctorRepository: Repository<Doctor>,
+    @InjectRepository(History)
+    private historyRepository: Repository<History>,
+    @InjectRepository(Prescription)
+    private prescriptionRepository: Repository<Prescription>,
   ) {}
 
   async isTableEmpty(repository: Repository<any>): Promise<boolean> {
@@ -130,6 +136,45 @@ export class AppService {
       );
 
       await this.patientRepository.save(patients);
+    }
+
+    if (
+      (await this.isTableEmpty(this.historyRepository)) &&
+      (await this.isTableEmpty(this.prescriptionRepository))
+    ) {
+      // Fetch all doctors and patients from the database
+      const doctors = await this.doctorRepository.find();
+      const patients = await this.patientRepository.find();
+
+      for (const doctor of doctors) {
+        for (const patient of patients) {
+          // Create a history for each patient with the current doctor
+          const history = this.historyRepository.create({
+            doctor: doctor,
+            patient: patient,
+            diagnosis: 'Example Diagnosis',
+            treatment: 'Example Treatment',
+            notes: 'Example notes.',
+          });
+
+          // Create a prescription for each patient with the current doctor
+          const prescription = this.prescriptionRepository.create({
+            doctor: doctor,
+            patient: patient,
+            medication: 'Example Medication',
+            dosage: 'Example Dosage',
+            frequency: 'Example Frequency',
+            startDate: new Date(),
+            endDate: new Date(
+              new Date().setFullYear(new Date().getFullYear() + 1),
+            ), // One year from now
+          });
+
+          // Save the history and prescription to the database
+          await this.historyRepository.save(history);
+          await this.prescriptionRepository.save(prescription);
+        }
+      }
     }
   }
 }
