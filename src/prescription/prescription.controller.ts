@@ -29,7 +29,7 @@ export class PrescriptionController {
   @Get()
   @Roles('admin', 'doctor', 'patient', 'Admin', 'Doctor', 'Patient')
   findAll(@Req() req: any) {
-    if (req.user.type === 'patient') {
+    if (req.user.type === 'patient' || req.user.type === 'Patient') {
       return this.prescriptionService.findPrescriptionsForPatient(req.user.id);
     }
     return this.prescriptionService.findAll();
@@ -38,7 +38,7 @@ export class PrescriptionController {
   @Get(':id')
   @Roles('admin', 'doctor', 'patient', 'Admin', 'Doctor', 'Patient')
   findOne(@Req() req: any, @Param('id') id: string) {
-    if (req.user.type === 'patient') {
+    if (req.user.type === 'patient' || req.user.type === 'Patient') {
       return this.prescriptionService.findPrescriptionForPatient(
         req.user.sub,
         id,

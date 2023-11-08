@@ -29,7 +29,7 @@ export class HistoryController {
   @Get()
   @Roles('doctor', 'patient', 'Doctor', 'Patient')
   findAll(@Req() req: any) {
-    if (req.user.type === 'patient') {
+    if (req.user.type === 'patient' || req.user.type === 'Patient') {
       return this.historyService.findHistoriesForPatient(req.user.sub);
     }
     return this.historyService.findAll();
@@ -38,7 +38,7 @@ export class HistoryController {
   @Get(':id')
   @Roles('doctor', 'patient', 'Doctor', 'Patient')
   findOne(@Req() req: any, @Param('id') id: string) {
-    if (req.user.type === 'patient') {
+    if (req.user.type === 'patient' || req.user.type === 'Patient') {
       return this.historyService.findHistoryForPatient(req.user.sub, id);
     }
     return this.historyService.findOne(id);
