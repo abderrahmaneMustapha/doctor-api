@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { CreateHistoryDto } from './dto/create-history.dto';
@@ -26,14 +27,20 @@ export class HistoryController {
   }
 
   @Get()
-  @Roles('doctor', 'Doctor')
-  findAll() {
+  @Roles('doctor', 'patient', 'Doctor', 'Patient')
+  findAll(@Req() req: any) {
+    if (req.user.type === 'patient') {
+      return this.historyService.findHistoriesForPatient(req.user.sub);
+    }
     return this.historyService.findAll();
   }
 
   @Get(':id')
-  @Roles('doctor', 'Doctor')
-  findOne(@Param('id') id: string) {
+  @Roles('doctor', 'patient', 'Doctor', 'Patient')
+  findOne(@Req() req: any, @Param('id') id: string) {
+    if (req.user.type === 'patient') {
+      return this.historyService.findHistoryForPatient(req.user.sub, id);
+    }
     return this.historyService.findOne(id);
   }
 

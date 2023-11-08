@@ -81,7 +81,6 @@ export class AppService {
         {
           name: 'Patient One',
           email: 'patient1@example.com',
-          password: 'password1',
           dateOfBirth: '1980-01-01',
           address: '123 First St, Anytown, AN',
           type: 'patient',
@@ -89,7 +88,6 @@ export class AppService {
         {
           name: 'Patient Two',
           email: 'patient2@example.com',
-          password: 'password2',
           dateOfBirth: '1990-02-02',
           address: '456 Second St, Anytown, AN',
           type: 'patient',
@@ -97,7 +95,6 @@ export class AppService {
         {
           name: 'Patient Three',
           email: 'patient3@example.com',
-          password: 'password3',
           dateOfBirth: '2000-03-03',
           address: '789 Third St, Anytown, AN',
           type: 'patient',
@@ -105,7 +102,6 @@ export class AppService {
         {
           name: 'Patient Four',
           email: 'patient4@example.com',
-          password: 'password4',
           dateOfBirth: '1985-04-04',
           address: '101 Fourth St, Anytown, AN',
           type: 'patient',
@@ -113,7 +109,6 @@ export class AppService {
         {
           name: 'Patient Five',
           email: 'patient5@example.com',
-          password: 'password5',
           dateOfBirth: '1975-05-05',
           address: '202 Fifth St, Anytown, AN',
           type: 'patient',
@@ -121,7 +116,6 @@ export class AppService {
         {
           name: 'Patient Six',
           email: 'patient6@example.com',
-          password: 'password6',
           dateOfBirth: '1965-06-06',
           address: '303 Sixth St, Anytown, AN',
           type: 'patient',

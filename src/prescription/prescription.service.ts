@@ -60,4 +60,19 @@ export class PrescriptionService {
       throw new NotFoundException(`Prescription with ID ${id} not found`);
     }
   }
+
+  async findPrescriptionsForPatient(patientId: string) {
+    return this.prescriptionRepository.find({
+      where: { patient: { id: patientId } },
+    });
+  }
+
+  async findPrescriptionForPatient(patientId: string, prescriptionId: string) {
+    return this.prescriptionRepository.findOne({
+      where: {
+        id: prescriptionId,
+        patient: { id: patientId },
+      },
+    });
+  }
 }

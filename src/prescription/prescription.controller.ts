@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PrescriptionService } from './prescription.service';
 import { CreatePrescriptionDto } from './dto/create-prescription.dto';
@@ -26,14 +27,23 @@ export class PrescriptionController {
   }
 
   @Get()
-  @Roles('admin', 'doctor', 'Admin', 'Doctor')
-  findAll() {
+  @Roles('admin', 'doctor', 'patient', 'Admin', 'Doctor', 'Patient')
+  findAll(@Req() req: any) {
+    if (req.user.type === 'patient') {
+      return this.prescriptionService.findPrescriptionsForPatient(req.user.id);
+    }
     return this.prescriptionService.findAll();
   }
 
   @Get(':id')
-  @Roles('admin', 'doctor', 'Admin', 'Doctor')
-  findOne(@Param('id') id: string) {
+  @Roles('admin', 'doctor', 'patient', 'Admin', 'Doctor', 'Patient')
+  findOne(@Req() req: any, @Param('id') id: string) {
+    if (req.user.type === 'patient') {
+      return this.prescriptionService.findPrescriptionForPatient(
+        req.user.sub,
+        id,
+      );
+    }
     return this.prescriptionService.findOne(id);
   }
 

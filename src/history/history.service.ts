@@ -9,20 +9,20 @@ import { UpdateHistoryDto } from './dto/update-history.dto';
 export class HistoryService {
   constructor(
     @InjectRepository(History)
-    private HistoryRepository: Repository<History>,
+    private historyRepository: Repository<History>,
   ) {}
 
   async create(createHistoryDto: CreateHistoryDto): Promise<History> {
-    const History = this.HistoryRepository.create(createHistoryDto);
-    return await this.HistoryRepository.save(History);
+    const History = this.historyRepository.create(createHistoryDto);
+    return await this.historyRepository.save(History);
   }
 
   async findAll(): Promise<History[]> {
-    return await this.HistoryRepository.find();
+    return await this.historyRepository.find();
   }
 
   async findOne(id: string): Promise<History> {
-    const History = await this.HistoryRepository.findOne({ where: { id } });
+    const History = await this.historyRepository.findOne({ where: { id } });
     if (!History) {
       throw new NotFoundException(`History with ID ${id} not found`);
     }
@@ -33,7 +33,7 @@ export class HistoryService {
     id: string,
     updateHistoryDto: UpdateHistoryDto,
   ): Promise<History> {
-    const History = await this.HistoryRepository.preload({
+    const History = await this.historyRepository.preload({
       id,
       ...updateHistoryDto,
     });
@@ -42,13 +42,28 @@ export class HistoryService {
       throw new NotFoundException(`History with ID ${id} not found`);
     }
 
-    return await this.HistoryRepository.save(History);
+    return await this.historyRepository.save(History);
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.HistoryRepository.delete(id);
+    const result = await this.historyRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`History with ID ${id} not found`);
     }
+  }
+
+  async findHistoriesForPatient(patientId: string) {
+    return this.historyRepository.find({
+      where: { patient: { id: patientId } },
+    });
+  }
+
+  async findHistoryForPatient(patientId: string, historyId: string) {
+    return this.historyRepository.findOne({
+      where: {
+        id: historyId,
+        patient: { id: patientId },
+      },
+    });
   }
 }
