@@ -3,10 +3,10 @@ import { Type } from 'class-transformer';
 
 export class CreatePrescriptionDto {
   @IsNotEmpty()
-  doctorId: number;
+  doctorId: string;
 
   @IsNotEmpty()
-  patientId: number;
+  patientId: string;
 
   @IsString()
   @IsNotEmpty()

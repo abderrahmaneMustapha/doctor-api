@@ -4,17 +4,45 @@ import { Repository } from 'typeorm';
 import { History } from './entities/history.entity';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
+import { DoctorService } from 'src/doctor/doctor.service';
+import { PatientService } from 'src/patient/patient.service';
 
 @Injectable()
 export class HistoryService {
   constructor(
     @InjectRepository(History)
     private historyRepository: Repository<History>,
+    private doctorService: DoctorService,
+    private patientService: PatientService,
   ) {}
 
   async create(createHistoryDto: CreateHistoryDto): Promise<History> {
-    const History = this.historyRepository.create(createHistoryDto);
-    return await this.historyRepository.save(History);
+    const history = this.historyRepository.create(createHistoryDto);
+
+    if (createHistoryDto.doctorId) {
+      const doctor = await this.doctorService.findOne(
+        createHistoryDto.doctorId,
+      );
+      if (!doctor) {
+        throw new NotFoundException(
+          `Doctor with ID ${createHistoryDto.doctorId} not found`,
+        );
+      }
+      history.doctor = doctor;
+    }
+
+    if (createHistoryDto.patientId) {
+      const patient = await this.patientService.findOne(
+        createHistoryDto.patientId,
+      );
+      if (!patient) {
+        throw new NotFoundException(
+          `Patient with ID ${createHistoryDto.patientId} not found`,
+        );
+      }
+      history.patient = patient;
+    }
+    return await this.historyRepository.save(history);
   }
 
   async findAll(): Promise<History[]> {
@@ -24,30 +52,54 @@ export class HistoryService {
   }
 
   async findOne(id: string): Promise<History> {
-    const History = await this.historyRepository.findOne({
+    const history = await this.historyRepository.findOne({
       where: { id },
       relations: ['patient', 'doctor'],
     });
-    if (!History) {
+    if (!history) {
       throw new NotFoundException(`History with ID ${id} not found`);
     }
-    return History;
+    return history;
   }
 
   async update(
     id: string,
     updateHistoryDto: UpdateHistoryDto,
   ): Promise<History> {
-    const History = await this.historyRepository.preload({
+    const history = await this.historyRepository.preload({
       id,
       ...updateHistoryDto,
     });
 
-    if (!History) {
+    if (!history) {
       throw new NotFoundException(`History with ID ${id} not found`);
     }
 
-    return await this.historyRepository.save(History);
+    if (updateHistoryDto.doctorId) {
+      const doctor = await this.doctorService.findOne(
+        updateHistoryDto.doctorId,
+      );
+      if (!doctor) {
+        throw new NotFoundException(
+          `Doctor with ID ${updateHistoryDto.doctorId} not found`,
+        );
+      }
+      history.doctor = doctor;
+    }
+
+    if (updateHistoryDto.patientId) {
+      const patient = await this.patientService.findOne(
+        updateHistoryDto.patientId,
+      );
+      if (!patient) {
+        throw new NotFoundException(
+          `Patient with ID ${updateHistoryDto.patientId} not found`,
+        );
+      }
+      history.patient = patient;
+    }
+
+    return await this.historyRepository.save(history);
   }
 
   async remove(id: string): Promise<void> {
