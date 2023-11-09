@@ -49,7 +49,7 @@ export class AuthService {
 
   async signUp(createUserDto: SignupDto): Promise<Doctor | Patient> {
     const { userData, type } = createUserDto;
-    console.log(createUserDto);
+
     switch (type) {
       case 'Doctor':
         return this.doctorService.create(userData as CreateDoctorDto);

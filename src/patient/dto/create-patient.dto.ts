@@ -13,8 +13,10 @@ export class CreatePatientDto {
   password: string;
 
   @IsDateString()
+  @IsNotEmpty()
   dateOfBirth: string;
 
   @IsString()
+  @IsNotEmpty()
   address: string;
 }

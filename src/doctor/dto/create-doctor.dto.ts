@@ -6,6 +6,7 @@ export class CreateDoctorDto {
   name: string;
 
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @IsString()
@@ -13,5 +14,6 @@ export class CreateDoctorDto {
   password: string;
 
   @IsString()
+  @IsNotEmpty()
   specialization: string;
 }
