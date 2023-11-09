@@ -9,6 +9,7 @@ import { Patient } from 'src/patient/entities/patient.entity';
 import { SignupDto } from './dto/sign-up-dto';
 import { CreatePatientDto } from 'src/patient/dto/create-patient.dto';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +28,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const match = password === user.password;
+    const match = bcrypt.compare(password, user.password);
 
     if (!match) {
       throw new UnauthorizedException();
