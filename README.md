@@ -1,73 +1,105 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Doctor's Office Management System API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This API is designed for the efficient administration of a Doctor's Office, providing tools for managing patient appointments, medical records, prescriptions, and medical histories.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Core Entities
 
-## Description
+- **Doctor**: Manages information such as name, email, password, and specialization.
+- **Patient**: Stores details like name, email, password, date of birth, and address.
+- **Prescription**: Records details about the medication prescribed by a doctor to a patient, including dosage, frequency, and duration.
+- **Medical History**: Keeps a log of a patient's medical visits, diagnoses, treatments, and additional notes.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
 
-## Installation
+- **Patient Management**: Doctors and administrative staff can view and edit patient profiles.
+- **Prescription Handling**: Doctors can issue, revise, and remove prescriptions, while patients can view their own prescriptions.
+- **Medical History Tracking**: Doctors are enabled to document and modify medical histories, which are accessible to the corresponding patients.
+
+## User Actions
+
+- **Profile Creation**: Each user can register and manage their own profile.
+- **Doctor Functions**: Doctors have the ability to manage prescriptions and medical histories and access patient data.
+- **Administrative Staff Functions**: Administrative staff have viewing access to patient data.
+- **Patient Functions**: Patients can access their own medical histories and prescriptions, and update their personal information.
+
+## API Documentation
+
+The API is documented with OpenAPI and showcased through Swagger UI, offering an interactive and comprehensive guide to the available endpoints, their required parameters, and the expected response structures.
+
+### Accessing Documentation
+
+To engage with the interactive API documentation:
+
+1. Launch the API server locally.
+2. Open your web browser and navigate to `http://localhost:3000/api`.
+3. The Swagger UI will be displayed, allowing you to execute endpoint operations directly in the browser.
+
+### Swagger UI Benefits
+
+Using the Swagger UI, you can:
+
+- Explore the full list of available endpoints.
+- Execute test requests and examine the API responses.
+- Investigate the request models and response schemas.
+
+## Getting Started
+
+Follow these steps to set up the project on your local machine for development and testing.
+
+### Prerequisites
+
+- Node.js version v16.19.0 or above (using nvm is advised).
+- Git.
+- Docker (for database containerization).
+- Nest.js framework.
+
+### Installation
+
+Clone the repository:
 
 ```bash
-$ npm install
+git clone https://github.com/abderrahmaneMustapha/doctor-office-api.git
+cd doctor-office-api
 ```
 
-## Running the app
+Install the project dependencies:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Test
+### Running with Docker
+
+This project utilizes Docker to streamline the development environment and simplify deployment.
+
+#### Database Setup with Docker
+
+Create a `.env` file with the necessary environment variables:
+
+```plaintext
+NODE_ENV=development
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=5433
+TYPEORM_SYNCHRONIZE=true
+TYPEORM_LOGGING=true
+TYPEORM_AUTO_LOAD_ENTITIES=true
+POSTGRES_DB=dev-db
+POSTGRES_USER=dev-user
+POSTGRES_PASSWORD=test123
+JWT_SECRET=testsecret
+```
+
+Launch the PostgreSQL database using Docker Compose:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker-compose up -d
 ```
 
-## Support
+#### Running the Application
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Start the application in development mode:
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+```bash
+npm run start:dev
+```
