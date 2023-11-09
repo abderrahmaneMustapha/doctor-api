@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEnum, ValidateNested } from 'class-validator';
 import { CreateDoctorDto } from 'src/doctor/dto/create-doctor.dto';
@@ -9,9 +10,22 @@ export enum UserType {
 }
 
 export class SignupDto {
+  @ApiProperty({
+    example: UserType.Doctor,
+    enum: UserType,
+    description: 'The type of user to create (Doctor or Patient)',
+  })
   @IsEnum(UserType)
   type: UserType;
 
+  @ApiProperty({
+    type: 'object',
+    description: 'User data for the doctor or patient',
+    oneOf: [
+      { $ref: '#/components/schemas/CreateDoctorDto' },
+      { $ref: '#/components/schemas/CreatePatientDto' },
+    ],
+  })
   @ValidateNested()
   @Type((options) => {
     const object = options.object as SignupDto;
